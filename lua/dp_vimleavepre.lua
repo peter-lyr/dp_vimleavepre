@@ -10,10 +10,7 @@ if B.check_plugins {
   return
 end
 
-function M.leave()
-  if M.leaved then
-    return
-  end
+function M.save()
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     local fname = vim.api.nvim_buf_get_name(bufnr)
     if #fname > 0 and vim.fn.filereadable(fname) == 1 then
@@ -22,6 +19,13 @@ function M.leave()
     end
   end
   vim.cmd 'wshada!'
+end
+
+function M.leave()
+  if M.leaved then
+    return
+  end
+  M.save()
   vim.fn['GuiWindowFullScreen'](0)
   vim.fn['GuiWindowMaximized'](0)
   vim.fn['GuiWindowFrameless'](0)
